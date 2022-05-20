@@ -1,0 +1,47 @@
+car-storage:
+  time-zone-id: "UTC"
+
+guard:
+  public-key-location: "#{null}"
+  cert-uri: "#{null}"
+
+db:
+  host: "localhost"
+  port: 5432
+  name: "car-storage"
+  user: "car-storage"
+  password: "car-storage"
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: "${guard.public-key-location}"
+          jwk-set-uri: "${guard.cert-uri}"
+  r2dbc:
+    url: "r2dbc:postgresql://${db.host}:${db.port}/${db.name}"#?ssl=true&sslMode=require"
+    username: "${db.user}"
+    password: "${db.password}"
+  flyway:
+    url: "jdbc:postgresql://${db.host}:${db.port}/${db.name}"#?ssl=true&sslmode=require"
+    user: "${db.user}"
+    password: "${db.password}"
+    locations: classpath:db
+
+management:
+  endpoint:
+    info:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "info, metrics, prometheus, health"

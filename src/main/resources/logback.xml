@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%-5level][%d{HH:mm:ss.SSS}][%thread][%logger{36}] - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+    <if condition='isDefined("DEVELOPMENT_MODE")'>
+        <then>
+            <root level="${APP_LOGGING_LEVEL:-INFO}">
+                <appender-ref ref="STDOUT"/>
+            </root>
+        </then>
+        <else>
+            <root level="${APP_LOGGING_LEVEL:-INFO}">
+                <appender-ref ref="JSON"/>
+            </root>
+        </else>
+    </if>
+</configuration>

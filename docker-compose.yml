@@ -1,0 +1,33 @@
+version: '3.6'
+networks:
+  car-storage-net:
+services:
+  car-storage:
+    build:
+      context: .
+    container_name: car-storage
+    environment:
+      GUARD_CERT_URI: "http:// <<GUARD-HOST>> /realms/ <<GUARD-REALM>> /protocol/openid-connect/certs"
+      DB_HOST: car-storage-db
+      DB_NAME: car-storage
+      DB_USER: car-storage
+      DB_PASSWORD: car-storage
+    # DEVELOPMENT_MODE: "true"
+    # APP_LOGGING_LEVEL: DEBUG
+    ports:
+      - "8080:8080"
+    networks:
+      - car-storage-net
+    depends_on:
+      - car-storage-db
+  car-storage-db:
+    image: postgres:14-alpine
+    container_name: car-storage-db
+    environment:
+      POSTGRES_USER: car-storage
+      POSTGRES_PASSWORD: car-storage
+      POSTGRES_DB: car-storage
+    ports:
+      - "5432:5432"
+    networks:
+      - car-storage-net

@@ -1,0 +1,308 @@
+{
+	"info": {
+		"_postman_id": "372ee604-720d-4520-b9c2-bcd17c6881b2",
+		"name": "Car Storage",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Public API",
+			"item": [
+				{
+					"name": "Car",
+					"item": [
+						{
+							"name": "Get Car",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{car-storage-endpoint}}/api/public/cars/{{carId}}",
+									"host": [
+										"{{car-storage-endpoint}}"
+									],
+									"path": [
+										"api",
+										"public",
+										"cars",
+										"{{carId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Cars",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{car-storage-endpoint}}/api/public/cars",
+									"host": [
+										"{{car-storage-endpoint}}"
+									],
+									"path": [
+										"api",
+										"public",
+										"cars"
+									],
+									"query": [
+										{
+											"key": "carIds",
+											"value": "{{car1Id}},{{car2Id}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{guard-jwt-token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Internal API",
+			"item": [
+				{
+					"name": "Car",
+					"item": [
+						{
+							"name": "Get Car",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{car-storage-endpoint}}/api/internal/cars/{{carId}}",
+									"host": [
+										"{{car-storage-endpoint}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"cars",
+										"{{carId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Cars",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{car-storage-endpoint}}/api/internal/cars",
+									"host": [
+										"{{car-storage-endpoint}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"cars"
+									],
+									"query": [
+										{
+											"key": "carIds",
+											"value": "{{car1Id}},{{car2Id}}",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Save Car",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"brand\": \"Super Brand\",\r\n    \"model\": \"Super Model\",\r\n    \"producedAt\": \"1998-05-05\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{car-storage-endpoint}}/api/internal/cars",
+									"host": [
+										"{{car-storage-endpoint}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"cars"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Car",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"brand\": \"Updated Brand\",\r\n    \"model\": \"Updated Model\",\r\n    \"producedAt\": \"2000-05-05\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{car-storage-endpoint}}/api/internal/cars/{{carId}}",
+									"host": [
+										"{{car-storage-endpoint}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"cars",
+										"{{carId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete car",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{car-storage-endpoint}}/api/internal/cars/{{carId}}",
+									"host": [
+										"{{car-storage-endpoint}}"
+									],
+									"path": [
+										"api",
+										"internal",
+										"cars",
+										"{{carId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Actuator",
+			"item": [
+				{
+					"name": "Actuator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{car-storage-endpoint}}/actuator",
+							"host": [
+								"{{car-storage-endpoint}}"
+							],
+							"path": [
+								"actuator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{car-storage-endpoint}}/actuator/health",
+							"host": [
+								"{{car-storage-endpoint}}"
+							],
+							"path": [
+								"actuator",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Prometheus",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{car-storage-endpoint}}/actuator/prometheus",
+							"host": [
+								"{{car-storage-endpoint}}"
+							],
+							"path": [
+								"actuator",
+								"prometheus"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"var moment = require('moment');",
+					"pm.environment.set('today', moment().utcOffset(0, false).format(\"YYYY-MM-DD\"));",
+					"pm.environment.set('now', moment().utcOffset(0, false).format(\"YYYY-MM-DDTHH:MM:ss.SSSSSS\"));"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

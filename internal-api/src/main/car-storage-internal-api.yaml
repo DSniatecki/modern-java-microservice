@@ -1,0 +1,180 @@
+openapi: "3.0.0"
+info:
+  title: Car Storage Internal API
+  version: 0.1.0
+
+paths:
+
+  /cars:
+    get:
+      tags:
+        - car-controller
+      operationId: getCars
+      parameters:
+        - name: carIds
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              example: 'c039e9fc-8b46-11ec-a8a3-0242ac120002'
+            uniqueItems: true
+      responses:
+        200:
+          description: Cars
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Car'
+    post:
+      tags:
+        - car-controller
+      operationId: createCar
+      requestBody:
+        description: Car Data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarData'
+      responses:
+        '201':
+          description: Car was created
+        '400':
+          description: Car Data is invalid
+
+  /cars/{carId}:
+    get:
+      tags:
+        - car-controller
+      operationId: getCar
+      parameters:
+        - name: carId
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 36
+            maxLength: 36
+            example: 'c039e9fc-8b46-11ec-a8a3-0242ac120002'
+      responses:
+        200:
+          description: Car
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        404:
+          description: Car for given id was not found
+    put:
+      tags:
+        - car-controller
+      operationId: updateCar
+      parameters:
+        - name: carId
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 36
+            maxLength: 36
+            example: 'c039e9fc-8b46-11ec-a8a3-0242ac120002'
+      requestBody:
+        description: Car Data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarData'
+      responses:
+        200:
+          description: Updated Car
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Car'
+        404:
+          description: Car for given id was not found
+    delete:
+      tags:
+        - car-controller
+      operationId: deleteCar
+      parameters:
+        - name: carId
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 36
+            maxLength: 36
+            example: 'c039e9fc-8b46-11ec-a8a3-0242ac120002'
+      responses:
+        204:
+          description: Car was deleted
+        404:
+          description: Car for given id was not found
+
+components:
+  schemas:
+
+    CarData:
+      type: object
+      properties:
+        brand:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: 'Super Brand'
+        model:
+          type: string
+          minLength: 1
+          maxLength: 128
+          example: 'Super Model'
+        producedAt:
+          type: string
+          format: date
+          example: '1998-05-05'
+      required:
+        - brand
+        - model
+        - producedAt
+
+    Car:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 36
+          maxLength: 36
+          example: 'x139e9fc-8b46-11ec-a8a3-0242ac120337'
+        brand:
+          type: string
+          minLength: 1
+          maxLength: 64
+          example: 'Super Brand'
+        model:
+          type: string
+          minLength: 1
+          maxLength: 128
+          example: 'Super Model'
+        producedAt:
+          type: string
+          format: date
+          example: '1998-05-05'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-02-18T23:30:02.888028'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2022-02-18T23:30:02.888028'
+      required:
+        - id
+        - brand
+        - model
+        - producedAt
+        - createdAt

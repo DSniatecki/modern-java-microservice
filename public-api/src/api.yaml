@@ -28,7 +28,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Car'
+                  $ref: '#/components/schemas/CarDTO'
 
   /cars/{carId}:
     get:
@@ -50,14 +50,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Car'
+                $ref: '#/components/schemas/CarDTO'
         404:
           description: Car for given id was not found
 
 components:
   schemas:
 
-    Car:
+    CarDTO:
       type: object
       properties:
         id:

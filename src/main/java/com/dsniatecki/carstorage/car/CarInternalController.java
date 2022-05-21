@@ -1,66 +1,63 @@
 package com.dsniatecki.carstorage.car;
 
-import org.reactivestreams.Publisher;
-import org.springframework.dao.DataIntegrityViolationException;
+import com.dsniatecki.carstorage.api.internal.CarsApi;
+import com.dsniatecki.carstorage.model.internal.CarDTO;
+import com.dsniatecki.carstorage.model.internal.CarDataDTO;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 @RestController
 @RequestMapping(path = {"/api/internal"})
-record CarInternalController(
-        CarService carService
-) {
+class CarInternalController implements CarsApi {
 
-    @GetMapping(value = {"/cars/{carId}"}, produces = {APPLICATION_JSON_VALUE})
-    Publisher<Car> getCar(@PathVariable(name = "carId") String carId) {
+    private final CarService carService;
+
+    CarInternalController(CarService carService) {
+        this.carService = carService;
+    }
+
+    @Override
+    public Mono<ResponseEntity<CarDTO>> getCar(String carId, ServerWebExchange exchange) {
         return carService.get(carId)
+                .map(car -> ResponseEntity.ok(InternalMapper.toCarDTO(car)))
+                .switchIfEmpty(Mono.error(new NoSuchElementException("Car with id: '" + carId + "' does not exist.")));
+    }
+
+    @Override
+    public Mono<ResponseEntity<Flux<CarDTO>>> getCars(Optional<Set<String>> carIds, ServerWebExchange exchange) {
+        return Mono.just(carIds.map(carService::getMultiple).orElseGet(carService::getAll))
+                .map(flux -> flux.map(InternalMapper::toCarDTO))
+                .map(ResponseEntity::ok);
+    }
+
+    @Override
+    public Mono<ResponseEntity<CarDTO>> createCar(Mono<CarDataDTO> carDataDTO, ServerWebExchange exchange) {
+        return carDataDTO
+                .flatMap(dto -> carService.save(InternalMapper.toCarData(dto)))
+                .map(car -> ResponseEntity.status(HttpStatus.CREATED).body(InternalMapper.toCarDTO(car)));
+    }
+
+    @Override
+    public Mono<ResponseEntity<CarDTO>> updateCar(String carId, Mono<CarDataDTO> carDataDTO, ServerWebExchange exchange) {
+        return carDataDTO
+                .flatMap(dto -> carService.update(carId, InternalMapper.toCarData(dto)))
                 .switchIfEmpty(Mono.error(new NoSuchElementException("Car with id: '" + carId + "' does not exist.")))
-                .onErrorMap(NoSuchElementException.class, exc -> new ResponseStatusException(HttpStatus.NOT_FOUND, exc.getMessage()));
+                .map(car -> ResponseEntity.status(HttpStatus.CREATED).body(InternalMapper.toCarDTO(car)));
     }
 
-    @GetMapping(value = {"/cars"}, produces = {APPLICATION_JSON_VALUE})
-    Publisher<Car> getCars(@RequestParam(name = "carIds", required = false) Optional<Set<String>> carIds) {
-        return carIds.map(carService::getMultiple).orElseGet(carService::getAll);
-    }
-
-    @PostMapping(value = {"/cars"}, consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
-    @ResponseStatus(HttpStatus.CREATED)
-    Publisher<Car> createCar(@RequestBody CarData newCarData) {
-        return handleErrors(Mono.just(newCarData)
-                .map(CarDataValidator::validate)
-                .flatMap(carService::save)
-        );
-    }
-
-    @PutMapping(value = {"/cars/{carId}"}, consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
-    Publisher<Car> updateCar(@PathVariable(name = "carId") String carId, @RequestBody CarData carData) {
-        return handleErrors(Mono.just(carData)
-                .map(CarDataValidator::validate)
-                .flatMap(data -> carService.update(carId, data))
-                .switchIfEmpty(Mono.error(new NoSuchElementException("Car with id: '" + carId + "' does not exist.")))
-        );
-    }
-
-    @DeleteMapping(value = {"/cars/{carId}"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    Publisher<String> deleteCar(@PathVariable(name = "carId") String carId) {
-        return handleErrors(carService.delete(carId)
-                .switchIfEmpty(Mono.error(new NoSuchElementException("Car with id: '" + carId + "' does not exist.")))
-        );
-    }
-
-    private <T> Mono<T> handleErrors(Mono<T> mono) {
-        return mono.onErrorMap(NoSuchElementException.class, exc -> new ResponseStatusException(HttpStatus.NOT_FOUND, exc.getMessage()))
-                .onErrorMap(IllegalStateException.class, exc -> new ResponseStatusException(HttpStatus.BAD_REQUEST, exc.getMessage()))
-                .onErrorMap(IllegalArgumentException.class, exc -> new ResponseStatusException(HttpStatus.BAD_REQUEST, exc.getMessage()))
-                .onErrorMap(DataIntegrityViolationException.class, exc -> new ResponseStatusException(HttpStatus.CONFLICT, exc.getMessage()));
+    @Override
+    public Mono<ResponseEntity<Void>> deleteCar(String carId, ServerWebExchange exchange) {
+        return carService.delete(carId)
+                .map(id -> ResponseEntity.noContent().<Void>build())
+                .switchIfEmpty(Mono.error(new NoSuchElementException("Car with id: '" + carId + "' does not exist.")));
     }
 }

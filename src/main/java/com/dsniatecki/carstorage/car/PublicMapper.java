@@ -1,14 +1,14 @@
 package com.dsniatecki.carstorage.car;
 
-import com.dsniatecki.carstorage.model.pub.CarDTO;
+import com.dsniatecki.carstorage.model.pub.CarDto;
 
 class PublicMapper {
 
     private PublicMapper() {
     }
 
-    static CarDTO toCarDTO(Car car) {
-        return new CarDTO()
+    static CarDto toCarDto(Car car) {
+        return new CarDto()
                 .id(car.id())
                 .brand(car.brand())
                 .model(car.model())

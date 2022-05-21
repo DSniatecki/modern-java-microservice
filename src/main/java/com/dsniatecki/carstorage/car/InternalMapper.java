@@ -1,19 +1,19 @@
 package com.dsniatecki.carstorage.car;
 
-import com.dsniatecki.carstorage.model.internal.CarDTO;
-import com.dsniatecki.carstorage.model.internal.CarDataDTO;
+import com.dsniatecki.carstorage.model.internal.CarDataDto;
+import com.dsniatecki.carstorage.model.internal.CarDto;
 
 class InternalMapper {
 
     private InternalMapper() {
     }
 
-    static CarData toCarData(CarDataDTO carDataDTO) {
-        return new CarData(carDataDTO.getBrand(), carDataDTO.getModel(), carDataDTO.getProducedAt());
+    static CarData toCarData(CarDataDto carDataDto) {
+        return new CarData(carDataDto.getBrand(), carDataDto.getModel(), carDataDto.getProducedAt());
     }
 
-    static CarDTO toCarDTO(Car car) {
-        return new CarDTO()
+    static CarDto toCarDto(Car car) {
+        return new CarDto()
                 .id(car.id())
                 .brand(car.brand())
                 .model(car.model())

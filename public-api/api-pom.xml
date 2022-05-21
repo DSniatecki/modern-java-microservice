@@ -74,9 +74,10 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
+                            <generatorName>spring</generatorName>
                             <inputSpec>src/api.yaml</inputSpec>
                             <output>${project.build.directory}/generated-sources/java</output>
-                            <generatorName>spring</generatorName>
+                            <modelNameSuffix>Dto</modelNameSuffix>
                             <configOptions>
                                 <library>spring-boot</library>
                                 <artifactId>${project.artifactId}</artifactId>

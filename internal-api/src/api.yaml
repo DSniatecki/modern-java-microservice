@@ -28,7 +28,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CarDTO'
+                  $ref: '#/components/schemas/Car'
     post:
       tags:
         - car-controller
@@ -39,14 +39,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CarDataDTO'
+              $ref: '#/components/schemas/CarData'
       responses:
         '201':
           description: Car was created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CarDTO'
+                $ref: '#/components/schemas/Car'
         '400':
           description: Car Data is invalid
 
@@ -70,7 +70,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CarDTO'
+                $ref: '#/components/schemas/Car'
         404:
           description: Car for given id was not found
     put:
@@ -92,14 +92,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CarDataDTO'
+              $ref: '#/components/schemas/CarData'
       responses:
         200:
           description: Updated Car
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CarDTO'
+                $ref: '#/components/schemas/Car'
         404:
           description: Car for given id was not found
     delete:
@@ -124,7 +124,7 @@ paths:
 components:
   schemas:
 
-    CarDataDTO:
+    CarData:
       type: object
       properties:
         brand:
@@ -146,7 +146,7 @@ components:
         - model
         - producedAt
 
-    CarDTO:
+    Car:
       type: object
       properties:
         id:

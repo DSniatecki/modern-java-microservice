@@ -4,8 +4,8 @@ services:
     image: swaggerapi/swagger-editor:v4.1.2
     container_name: swagger-editor
     environment:
-      SWAGGER_FILE: /tmp/api/car-storage-public-api.yaml
+      SWAGGER_FILE: /tmp/api/api.yaml
     volumes:
-      - ./src/main/car-storage-public-api.yaml:/tmp/api/car-storage-public-api.yaml
+      - ./src/api.yaml:/tmp/api/api.yaml
     ports:
       - '10000:8080'

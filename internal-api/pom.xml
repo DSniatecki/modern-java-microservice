@@ -6,8 +6,8 @@
 
     <groupId>com.dsniatecki.carstorage</groupId>
     <artifactId>car-storage-internal-api</artifactId>
-    <version>0.1.0</version>
-    <name>Car Storage Internal Api</name>
+    <version>0.2.0-SNAPSHOT</version>
+    <name>Car Storage Internal API</name>
     <description>Car Storage Internal OpenAPI definitions</description>
 
     <properties>
@@ -69,7 +69,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>src/main/car-storage-internal-api.yaml</inputSpec>
+                            <inputSpec>src/api.yaml</inputSpec>
                             <output>${project.build.directory}/generated-sources/java</output>
                             <generatorName>java</generatorName>
                             <configOptions>

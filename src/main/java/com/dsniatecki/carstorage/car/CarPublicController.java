@@ -15,7 +15,7 @@ import java.util.Set;
 
 
 @RestController
-@RequestMapping(path = {"/api/public"})
+@RequestMapping(path = "/api/public")
 class CarPublicController implements CarsApi {
 
     private final CarService carService;

@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @RestController
-@RequestMapping(path = {"/api/internal"})
+@RequestMapping(path = "/api/internal")
 class CarInternalController implements CarsApi {
 
     private final CarService carService;

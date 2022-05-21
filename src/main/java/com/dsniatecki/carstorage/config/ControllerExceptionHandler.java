@@ -17,12 +17,12 @@ class ControllerExceptionHandler {
         return ResponseEntity.badRequest().build();
     }
 
-    @ExceptionHandler({NoSuchElementException.class})
+    @ExceptionHandler(NoSuchElementException.class)
     ResponseEntity<Void> handleNoSuchElementException(NoSuchElementException exc) {
         return ResponseEntity.notFound().build();
     }
 
-    @ExceptionHandler({DataIntegrityViolationException.class})
+    @ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException exc) {
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }

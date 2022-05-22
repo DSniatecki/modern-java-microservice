@@ -51,7 +51,7 @@ class CarInternalController implements CarsApi {
         return carDataDto
                 .flatMap(Dto -> carService.update(carId, InternalMapper.toCarData(Dto)))
                 .switchIfEmpty(Mono.error(new NoSuchElementException("Car with id: '" + carId + "' does not exist.")))
-                .map(car -> ResponseEntity.status(HttpStatus.CREATED).body(InternalMapper.toCarDto(car)));
+                .map(car -> ResponseEntity.ok(InternalMapper.toCarDto(car)));
     }
 
     @Override

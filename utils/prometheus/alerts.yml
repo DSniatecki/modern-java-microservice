@@ -1,0 +1,6 @@
+groups:
+  - name: InfrastructureAlerts
+    rules:
+      - alert: InstanceDown
+        expr: up == 0
+        for: 30s

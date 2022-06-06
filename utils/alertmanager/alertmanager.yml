@@ -1,0 +1,15 @@
+global:
+  smtp_from: 'alertmanager@carstorage.com'
+  smtp_smarthost: 'smtp-server:1025'
+  smtp_require_tls: false
+
+route:
+  receiver: 'mail'
+  repeat_interval: 1h
+  group_by: [ alertname ]
+
+receivers:
+  - name: 'mail'
+    email_configs:
+      - to: 'alerts@carstorage.com'
+        send_resolved: true

@@ -3,8 +3,7 @@ networks:
   car-storage-net:
 services:
   car-storage:
-    build:
-      context: .
+    image: dsniatecki/car-storage:0.3.0-java
     container_name: car-storage
     environment:
       GUARD_CERT_URI: "http:// <<GUARD-HOST>> /realms/ <<GUARD-REALM>> /protocol/openid-connect/certs"

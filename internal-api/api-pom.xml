@@ -6,7 +6,7 @@
 
     <groupId>com.dsniatecki.carstorage</groupId>
     <artifactId>car-storage-internal-api</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.3.0</version>
     <name>Car Storage Internal API</name>
     <description>Car Storage Internal OpenAPI definitions</description>
 
